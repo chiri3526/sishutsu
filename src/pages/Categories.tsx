@@ -90,8 +90,10 @@ export const Categories = () => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4">カテゴリ管理</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+        <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+          カテゴリ管理
+        </Typography>
         <Button variant="contained" onClick={() => setOpen(true)} disabled={loading}>
           新規追加
         </Button>
@@ -103,23 +105,23 @@ export const Categories = () => {
         </Box>
       )}
 
-      <Paper>
+      <Paper sx={{ overflowX: 'auto' }}>
         <TableContainer>
-          <Table>
+          <Table size="small" sx={{ minWidth: { xs: 400, sm: 500 } }}>
             <TableHead>
               <TableRow>
-                <TableCell>カテゴリ名</TableCell>
-                <TableCell align="right">夫負担率</TableCell>
-                <TableCell align="right">妻負担率</TableCell>
-                <TableCell>操作</TableCell>
+                <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ名</TableCell>
+                <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>夫負担率</TableCell>
+                <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>妻負担率</TableCell>
+                <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>操作</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {categories.map((category) => (
                 <TableRow key={category.id}>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell align="right">{(category.shareRatio.husband * 100).toFixed(0)}%</TableCell>
-                  <TableCell align="right">{(category.shareRatio.wife * 100).toFixed(0)}%</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{category.name}</TableCell>
+                  <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{(category.shareRatio.husband * 100).toFixed(0)}%</TableCell>
+                  <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{(category.shareRatio.wife * 100).toFixed(0)}%</TableCell>
                   <TableCell>
                     <IconButton size="small" onClick={() => handleEdit(category)}>
                       <Edit />

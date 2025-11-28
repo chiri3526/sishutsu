@@ -76,7 +76,9 @@ export const ExpenseInput = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>支出入力</Typography>
+      <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+        支出入力
+      </Typography>
 
       {loading && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
@@ -137,18 +139,18 @@ export const ExpenseInput = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Paper>
+        <Paper sx={{ overflowX: 'auto' }}>
           <TableContainer>
-            <Table>
+            <Table size="small" sx={{ minWidth: { xs: 600, sm: 650 } }}>
               <TableHead>
                 <TableRow>
-                  <TableCell>日付</TableCell>
-                  <TableCell>カテゴリ</TableCell>
-                  <TableCell align="right">金額</TableCell>
-                  <TableCell align="right">夫負担</TableCell>
-                  <TableCell align="right">妻負担</TableCell>
-                  <TableCell>メモ</TableCell>
-                  <TableCell>操作</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>日付</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ</TableCell>
+                  <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>金額</TableCell>
+                  <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>夫負担</TableCell>
+                  <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>妻負担</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>メモ</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>操作</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -156,12 +158,12 @@ export const ExpenseInput = () => {
                   const category = categories.find(c => c.id === expense.categoryId);
                   return (
                     <TableRow key={expense.id}>
-                      <TableCell>{expense.date}</TableCell>
-                      <TableCell>{category?.name}</TableCell>
-                      <TableCell align="right">¥{expense.amount.toLocaleString()}</TableCell>
-                      <TableCell align="right">¥{expense.husbandAmount.toLocaleString()}</TableCell>
-                      <TableCell align="right">¥{expense.wifeAmount.toLocaleString()}</TableCell>
-                      <TableCell>{expense.memo}</TableCell>
+                      <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{expense.date}</TableCell>
+                      <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{category?.name}</TableCell>
+                      <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{expense.amount.toLocaleString()}</TableCell>
+                      <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{expense.husbandAmount.toLocaleString()}</TableCell>
+                      <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{expense.wifeAmount.toLocaleString()}</TableCell>
+                      <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{expense.memo}</TableCell>
                       <TableCell>
                         <IconButton size="small" onClick={() => expense.id && handleDelete(expense.id)} disabled={loading}>
                           <Delete />

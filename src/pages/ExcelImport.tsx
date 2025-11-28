@@ -59,7 +59,9 @@ export const ExcelImport = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>Excel取り込み</Typography>
+      <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+        Excel取り込み
+      </Typography>
 
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="body1" gutterBottom>

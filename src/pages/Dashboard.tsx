@@ -40,9 +40,11 @@ export const Dashboard = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>ダッシュボード</Typography>
+      <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+        ダッシュボード
+      </Typography>
       
-      <FormControl sx={{ mb: 3, minWidth: 200 }}>
+      <FormControl sx={{ mb: 3, minWidth: { xs: '100%', sm: 200 } }}>
         <InputLabel>月を選択</InputLabel>
         <Select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)} label="月を選択">
           {monthlyTotals.map(m => (
@@ -51,11 +53,15 @@ export const Dashboard = () => {
         </Select>
       </FormControl>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3, mb: 3 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: { xs: 2, sm: 3 }, mb: 3 }}>
         <Card>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>総支出</Typography>
-            <Typography variant="h4">¥{currentTotal.toLocaleString()}</Typography>
+            <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+              総支出
+            </Typography>
+            <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+              ¥{currentTotal.toLocaleString()}
+            </Typography>
             {previousMonthDiff !== undefined && (
               <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
                 {previousMonthDiff > 0 ? <TrendingUp color="error" /> : <TrendingDown color="success" />}
@@ -69,8 +75,12 @@ export const Dashboard = () => {
 
         <Card>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>夫負担額</Typography>
-            <Typography variant="h4">¥{husbandTotal.toLocaleString()}</Typography>
+            <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+              夫負担額
+            </Typography>
+            <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+              ¥{husbandTotal.toLocaleString()}
+            </Typography>
             <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
               {currentTotal > 0 ? ((husbandTotal / currentTotal) * 100).toFixed(1) : 0}%
             </Typography>
@@ -79,8 +89,12 @@ export const Dashboard = () => {
 
         <Card>
           <CardContent>
-            <Typography color="textSecondary" gutterBottom>妻負担額</Typography>
-            <Typography variant="h4">¥{wifeTotal.toLocaleString()}</Typography>
+            <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
+              妻負担額
+            </Typography>
+            <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+              ¥{wifeTotal.toLocaleString()}
+            </Typography>
             <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
               {currentTotal > 0 ? ((wifeTotal / currentTotal) * 100).toFixed(1) : 0}%
             </Typography>
@@ -88,10 +102,13 @@ export const Dashboard = () => {
         </Card>
       </Box>
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '2fr 1fr' }, gap: 3, mb: 3 }}>
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>月別支出推移</Typography>
-          <ResponsiveContainer width="100%" height={300}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: { xs: 2, sm: 3 }, mb: 3 }}>
+        <Paper sx={{ p: { xs: 1.5, sm: 2 } }}>
+          <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+            月別支出推移
+          </Typography>
+          <Box sx={{ height: { xs: 250, sm: 300 } }}>
+            <ResponsiveContainer width="100%" height="100%">
             <LineChart data={[...monthlyTotals].reverse()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
@@ -103,11 +120,15 @@ export const Dashboard = () => {
               <Line type="monotone" dataKey="wifeTotal" stroke="#ffc658" name="妻" />
             </LineChart>
           </ResponsiveContainer>
+          </Box>
         </Paper>
 
-        <Paper sx={{ p: 2 }}>
-          <Typography variant="h6" gutterBottom>カテゴリ別割合</Typography>
-          <ResponsiveContainer width="100%" height={300}>
+        <Paper sx={{ p: { xs: 1.5, sm: 2 } }}>
+          <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+            カテゴリ別割合
+          </Typography>
+          <Box sx={{ height: { xs: 250, sm: 300 } }}>
+            <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={categoryExpenses as any}
@@ -125,12 +146,16 @@ export const Dashboard = () => {
               <Tooltip />
             </PieChart>
           </ResponsiveContainer>
+          </Box>
         </Paper>
       </Box>
 
-      <Paper sx={{ p: 2 }}>
-        <Typography variant="h6" gutterBottom>カテゴリ別支出</Typography>
-        <ResponsiveContainer width="100%" height={300}>
+      <Paper sx={{ p: { xs: 1.5, sm: 2 } }}>
+        <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+          カテゴリ別支出
+        </Typography>
+        <Box sx={{ height: { xs: 250, sm: 300 } }}>
+          <ResponsiveContainer width="100%" height="100%">
           <BarChart data={categoryExpenses as any}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="categoryName" />
@@ -140,6 +165,7 @@ export const Dashboard = () => {
             <Bar dataKey="total" fill="#8884d8" name="金額" />
           </BarChart>
         </ResponsiveContainer>
+        </Box>
       </Paper>
     </Box>
   );
