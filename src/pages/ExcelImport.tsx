@@ -93,30 +93,34 @@ export const ExcelImport = () => {
       </Paper>
 
       {preview.length > 0 && (
-        <Paper>
-          <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6">プレビュー ({preview.length}件)</Typography>
+        <Paper sx={{ overflowX: 'auto' }}>
+          <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+            <Typography variant="h6" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
+              プレビュー ({preview.length}件)
+            </Typography>
             <Button variant="contained" onClick={handleImport} disabled={loading}>
               インポート実行
             </Button>
           </Box>
           <TableContainer>
-            <Table>
+            <Table size="small" sx={{ minWidth: { xs: 500, sm: 600 } }}>
               <TableHead>
                 <TableRow>
-                  <TableCell>日付</TableCell>
-                  <TableCell>カテゴリ</TableCell>
-                  <TableCell align="right">金額</TableCell>
-                  <TableCell>メモ</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>日付</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ</TableCell>
+                  <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>金額</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>メモ</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {preview.slice(0, 10).map((row, index) => (
                   <TableRow key={index}>
-                    <TableCell>{row.date}</TableCell>
-                    <TableCell>{row.category}</TableCell>
-                    <TableCell align="right">¥{row.amount.toLocaleString()}</TableCell>
-                    <TableCell>{row.memo}</TableCell>
+                    <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
+                      {row.date || <span style={{ color: 'red' }}>日付なし</span>}
+                    </TableCell>
+                    <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{row.category}</TableCell>
+                    <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{row.amount.toLocaleString()}</TableCell>
+                    <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{row.memo}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
