@@ -80,8 +80,8 @@ sishutsu/
   categoryId: string;      // カテゴリID
   amount: number;          // 金額
   memo?: string;           // メモ
-  husbandAmount: number;   // 夫負担額
-  wifeAmount: number;      // 妻負担額
+  husbandAmount: number;   // たかし負担額
+  wifeAmount: number;      // まみ負担額
 }
 ```
 
@@ -91,8 +91,8 @@ sishutsu/
   id: string;              // 自動生成
   name: string;            // カテゴリ名
   shareRatio: {
-    husband: number;       // 夫負担率 (0-1)
-    wife: number;          // 妻負担率 (0-1)
+    husband: number;       // たかし負担率 (0-1)
+    wife: number;          // まみ負担率 (0-1)
   }
 }
 ```
@@ -106,20 +106,20 @@ sishutsu/
 
 ### 2. ダッシュボード
 - 月別総支出表示
-- 夫婦別負担額表示
+- たかし・まみ別負担額表示
 - 前月比較
 - カテゴリ別グラフ（円グラフ、棒グラフ）
 - 月別推移グラフ（折れ線グラフ）
 
 ### 3. 支出入力
 - 日付、カテゴリ、金額、メモの入力
-- 自動的に夫婦別負担額を計算
+- 自動的にたかし・まみ別負担額を計算
 - 支出一覧表示
 - 削除機能
 
 ### 4. カテゴリ管理
 - カテゴリの追加・編集・削除
-- 夫婦別負担率の設定
+- たかし・まみ別負担率の設定
 - カテゴリ一覧表示
 
 ### 5. Excel 取り込み
@@ -138,7 +138,7 @@ sishutsu/
 ```
 1. ユーザーが支出情報を入力
 2. カテゴリの負担率を取得
-3. 夫婦別負担額を自動計算
+3. たかし・まみ別負担額を自動計算
 4. Firestore に保存
 5. リアルタイムで一覧に反映
 ```
@@ -149,7 +149,7 @@ sishutsu/
 2. SheetJS でファイルを解析
 3. JSON データに変換
 4. カテゴリ名から categoryId を取得
-5. 各行の夫婦別負担額を計算
+5. 各行のたかし・まみ別負担額を計算
 6. Firestore に一括保存
 ```
 

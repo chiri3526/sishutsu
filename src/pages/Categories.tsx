@@ -111,8 +111,8 @@ export const Categories = () => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ名</TableCell>
-                <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>夫負担率</TableCell>
-                <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>妻負担率</TableCell>
+                <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>たかし負担率</TableCell>
+                <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>まみ負担率</TableCell>
                 <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>操作</TableCell>
               </TableRow>
             </TableHead>
@@ -148,14 +148,14 @@ export const Categories = () => {
               required
             />
             <TextField
-              label="夫負担率 (%)"
+              label="たかし負担率 (%)"
               type="number"
               value={formData.husbandRatio}
               onChange={(e) => setFormData({ ...formData, husbandRatio: e.target.value })}
               required
             />
             <TextField
-              label="妻負担率 (%)"
+              label="まみ負担率 (%)"
               type="number"
               value={formData.wifeRatio}
               onChange={(e) => setFormData({ ...formData, wifeRatio: e.target.value })}

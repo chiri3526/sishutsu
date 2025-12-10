@@ -76,7 +76,7 @@ export const Dashboard = () => {
         <Card>
           <CardContent>
             <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-              夫負担額
+              たかし負担額
             </Typography>
             <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
               ¥{husbandTotal.toLocaleString()}
@@ -90,7 +90,7 @@ export const Dashboard = () => {
         <Card>
           <CardContent>
             <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
-              妻負担額
+              まみ負担額
             </Typography>
             <Typography variant="h4" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
               ¥{wifeTotal.toLocaleString()}
@@ -116,8 +116,8 @@ export const Dashboard = () => {
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="total" stroke="#8884d8" name="総支出" />
-              <Line type="monotone" dataKey="husbandTotal" stroke="#82ca9d" name="夫" />
-              <Line type="monotone" dataKey="wifeTotal" stroke="#ffc658" name="妻" />
+              <Line type="monotone" dataKey="husbandTotal" stroke="#82ca9d" name="たかし" />
+              <Line type="monotone" dataKey="wifeTotal" stroke="#ffc658" name="まみ" />
             </LineChart>
           </ResponsiveContainer>
           </Box>
