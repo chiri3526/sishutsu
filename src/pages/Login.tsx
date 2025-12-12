@@ -35,7 +35,7 @@ export const Login = () => {
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', bgcolor: 'grey.100' }}>
       <Paper sx={{ p: 4, maxWidth: 400, width: '100%' }}>
         <Typography variant="h4" align="center" gutterBottom>
-          AI支出管理
+          支出管理
         </Typography>
 
         <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ mb: 3 }}>

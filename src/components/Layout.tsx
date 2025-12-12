@@ -79,7 +79,7 @@ export const Layout = ({ children }: LayoutProps) => {
             </IconButton>
           )}
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            AI支出管理
+            支出管理
           </Typography>
           <Button 
             color="inherit" 

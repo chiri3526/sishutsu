@@ -1,4 +1,4 @@
-# AI支出管理アプリ
+# 支出管理アプリ
 
 React + Firebase + Netlify で構築した支出管理アプリケーション
 

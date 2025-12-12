@@ -187,18 +187,10 @@ sishutsu/
 
 ## 今後の拡張計画
 
-### AI 機能
-- OpenAI API 連携
-- 月次サマリー自動生成
-- 支出増減理由の推測
-- 節約提案
-- カテゴリ自動分類
-
 ### Cloud Functions
 - 定期的な集計処理
 - メール通知
 - データバックアップ
-- AI 分析のバッチ処理
 
 ### 追加機能
 - レシート OCR（Google Cloud Vision API）

@@ -22,12 +22,7 @@ export const Settings = () => {
           <Typography variant="body1">{user?.uid}</Typography>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
 
-        <Typography variant="h6" gutterBottom>AI機能</Typography>
-        <Typography variant="body2" color="textSecondary">
-          AI分析機能は今後実装予定です。
-        </Typography>
       </Paper>
     </Box>
   );
