@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Box, Paper, Typography, Button, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, LinearProgress } from '@mui/material';
-import { CloudUpload } from '@mui/icons-material';
+import { Box, Paper, Typography, Button, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, LinearProgress, Divider } from '@mui/material';
+import { CloudUpload, Download } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { useCategories } from '../hooks/useCategories';
 import { parseExcelFile, convertToExpenses } from '../utils/excelImport';
@@ -14,6 +14,15 @@ export const ExcelImport = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+
+  const handleDownloadTemplate = () => {
+    const link = document.createElement('a');
+    link.href = '/excel-format.xlsx';
+    link.download = 'excel-format.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -64,28 +73,58 @@ export const ExcelImport = () => {
       </Typography>
 
       <Paper sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Excelファイルの取り込み
+        </Typography>
+        
         <Typography variant="body1" gutterBottom>
           Excelファイルをアップロードして支出データを一括登録できます。
         </Typography>
+        
         <Typography variant="body2" color="textSecondary" gutterBottom>
-          必要な列: 日付, カテゴリ, 金額, メモ（任意）
+          必要な列: 支払い年月, カテゴリ, 金額, メモ（任意）
         </Typography>
 
-        <Button
-          variant="contained"
-          component="label"
-          startIcon={<CloudUpload />}
-          sx={{ mt: 2 }}
-          disabled={loading}
-        >
-          ファイルを選択
-          <input
-            type="file"
-            hidden
-            accept=".xlsx,.xls"
-            onChange={handleFileChange}
-          />
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2, mt: 3, flexWrap: 'wrap' }}>
+          <Button
+            variant="outlined"
+            startIcon={<Download />}
+            onClick={handleDownloadTemplate}
+            sx={{ mb: 2 }}
+          >
+            フォーマットをダウンロード
+          </Button>
+
+          <Button
+            variant="contained"
+            component="label"
+            startIcon={<CloudUpload />}
+            disabled={loading}
+            sx={{ mb: 2 }}
+          >
+            ファイルを選択
+            <input
+              type="file"
+              hidden
+              accept=".xlsx,.xls"
+              onChange={handleFileChange}
+            />
+          </Button>
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Typography variant="body2" color="textSecondary">
+          <strong>使い方:</strong>
+          <br />
+          1. 「フォーマットをダウンロード」ボタンでExcelテンプレートをダウンロード
+          <br />
+          2. ダウンロードしたファイルに支出データを入力
+          <br />
+          3. 「ファイルを選択」ボタンで入力済みファイルをアップロード
+          <br />
+          4. プレビューを確認して「インポート実行」
+        </Typography>
 
         {loading && <LinearProgress sx={{ mt: 2 }} />}
         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
@@ -106,7 +145,7 @@ export const ExcelImport = () => {
             <Table size="small" sx={{ minWidth: { xs: 500, sm: 600 } }}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>日付</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>支払い年月</TableCell>
                   <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ</TableCell>
                   <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>金額</TableCell>
                   <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>メモ</TableCell>
@@ -116,7 +155,7 @@ export const ExcelImport = () => {
                 {preview.slice(0, 10).map((row, index) => (
                   <TableRow key={index}>
                     <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
-                      {row.date || <span style={{ color: 'red' }}>日付なし</span>}
+                      {row.date || <span style={{ color: 'red' }}>支払い年月なし</span>}
                     </TableCell>
                     <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{row.category}</TableCell>
                     <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{row.amount.toLocaleString()}</TableCell>

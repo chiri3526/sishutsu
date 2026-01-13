@@ -92,7 +92,7 @@ export const parseExcelFile = async (file: File): Promise<ExcelRow[]> => {
         
         const rows: ExcelRow[] = jsonRaw.map((row, index) => {
           // すべての可能な列名をチェック
-          const dateValue = row['日付'] || row['date'] || row['Date'] || row['DATE'] || 
+          const dateValue = row['支払い年月'] || row['日付'] || row['date'] || row['Date'] || row['DATE'] || 
                            row['ひづけ'] || row['ヒヅケ'] || '';
           
           console.log(`Row ${index} date value:`, dateValue, typeof dateValue);
@@ -134,9 +134,15 @@ export const convertToExpenses = (
       category.shareRatio
     );
 
+    // 年月形式の場合は -01 を追加してYYYY-MM-DD形式にする
+    let dateString = row.date;
+    if (dateString && /^\d{4}-\d{2}$/.test(dateString)) {
+      dateString = `${dateString}-01`;
+    }
+
     return {
       userId,
-      date: row.date,
+      date: dateString,
       categoryId: category.id,
       amount: row.amount,
       memo: row.memo || '',
