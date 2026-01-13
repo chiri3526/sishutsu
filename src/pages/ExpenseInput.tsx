@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Box, Paper, Typography, TextField, Button, Select, MenuItem, FormControl, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, CircularProgress, Snackbar, Alert } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import { Delete, Edit } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
-import { useExpenses, addExpense, deleteExpense } from '../hooks/useExpenses';
+import { useExpenses, addExpense, deleteExpense, updateExpense } from '../hooks/useExpenses';
 import { useCategories } from '../hooks/useCategories';
 import { calculateShareAmounts } from '../utils/calculations';
 import { format } from 'date-fns';
+import type { Expense } from '../types';
 
 export const ExpenseInput = () => {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ export const ExpenseInput = () => {
   });
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+  const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,15 +35,31 @@ export const ExpenseInput = () => {
       const amount = Number(formData.amount);
       const { husbandAmount, wifeAmount } = calculateShareAmounts(amount, category.shareRatio);
 
-      await addExpense({
-        userId: user.uid,
-        date: formData.date,
-        categoryId: formData.categoryId,
-        amount,
-        memo: formData.memo,
-        husbandAmount,
-        wifeAmount,
-      });
+      if (editingExpense?.id) {
+        // 更新処理
+        await updateExpense(editingExpense.id, {
+          date: formData.date,
+          categoryId: formData.categoryId,
+          amount,
+          memo: formData.memo,
+          husbandAmount,
+          wifeAmount,
+        });
+        setSnackbar({ open: true, message: '支出を更新しました', severity: 'success' });
+        setEditingExpense(null);
+      } else {
+        // 新規追加処理
+        await addExpense({
+          userId: user.uid,
+          date: formData.date,
+          categoryId: formData.categoryId,
+          amount,
+          memo: formData.memo,
+          husbandAmount,
+          wifeAmount,
+        });
+        setSnackbar({ open: true, message: '支出を追加しました', severity: 'success' });
+      }
 
       setFormData({
         date: format(new Date(), 'yyyy-MM-dd'),
@@ -50,13 +68,34 @@ export const ExpenseInput = () => {
         memo: '',
       });
 
-      setSnackbar({ open: true, message: '支出を追加しました', severity: 'success' });
       await refetch();
     } catch (error) {
       setSnackbar({ open: true, message: 'エラーが発生しました', severity: 'error' });
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleEdit = (expense: Expense) => {
+    setEditingExpense(expense);
+    setFormData({
+      date: expense.date,
+      categoryId: expense.categoryId,
+      amount: String(expense.amount),
+      memo: expense.memo || '',
+    });
+    // フォームまでスクロール
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingExpense(null);
+    setFormData({
+      date: format(new Date(), 'yyyy-MM-dd'),
+      categoryId: '',
+      amount: '',
+      memo: '',
+    });
   };
 
   const handleDelete = async (id: string) => {
@@ -87,6 +126,18 @@ export const ExpenseInput = () => {
       )}
 
       <Paper sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" gutterBottom sx={{ color: editingExpense ? 'primary.main' : 'inherit' }}>
+          {editingExpense ? '支出を編集' : '支出を追加'}
+        </Typography>
+        
+        {editingExpense && (
+          <Box sx={{ mb: 2, p: 2, bgcolor: 'primary.50', borderRadius: 1 }}>
+            <Typography variant="body2" color="primary.main">
+              編集中: {editingExpense.date} - {categories.find(c => c.id === editingExpense.categoryId)?.name} - ¥{editingExpense.amount.toLocaleString()}
+            </Typography>
+          </Box>
+        )}
+
         <form onSubmit={handleSubmit}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
@@ -127,9 +178,23 @@ export const ExpenseInput = () => {
               rows={2}
             />
 
-            <Button type="submit" variant="contained" size="large" disabled={loading}>
-              {loading ? '追加中...' : '追加'}
-            </Button>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Button type="submit" variant="contained" size="large" disabled={loading}>
+                {loading ? (editingExpense ? '更新中...' : '追加中...') : (editingExpense ? '更新' : '追加')}
+              </Button>
+              
+              {editingExpense && (
+                <Button 
+                  type="button" 
+                  variant="outlined" 
+                  size="large" 
+                  onClick={handleCancelEdit}
+                  disabled={loading}
+                >
+                  キャンセル
+                </Button>
+              )}
+            </Box>
           </Box>
         </form>
       </Paper>
@@ -165,6 +230,9 @@ export const ExpenseInput = () => {
                       <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{expense.wifeAmount.toLocaleString()}</TableCell>
                       <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{expense.memo}</TableCell>
                       <TableCell>
+                        <IconButton size="small" onClick={() => handleEdit(expense)} disabled={loading}>
+                          <Edit />
+                        </IconButton>
                         <IconButton size="small" onClick={() => expense.id && handleDelete(expense.id)} disabled={loading}>
                           <Delete />
                         </IconButton>
