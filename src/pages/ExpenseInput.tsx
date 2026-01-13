@@ -14,7 +14,7 @@ export const ExpenseInput = () => {
   const { categories } = useCategories();
   
   const [formData, setFormData] = useState({
-    date: format(new Date(), 'yyyy-MM-dd'),
+    date: format(new Date(), 'yyyy-MM'),
     categoryId: '',
     amount: '',
     memo: '',
@@ -38,7 +38,7 @@ export const ExpenseInput = () => {
       if (editingExpense?.id) {
         // 更新処理
         await updateExpense(editingExpense.id, {
-          date: formData.date,
+          date: `${formData.date}-01`, // YYYY-MM を YYYY-MM-01 に変換
           categoryId: formData.categoryId,
           amount,
           memo: formData.memo,
@@ -51,7 +51,7 @@ export const ExpenseInput = () => {
         // 新規追加処理
         await addExpense({
           userId: user.uid,
-          date: formData.date,
+          date: `${formData.date}-01`, // YYYY-MM を YYYY-MM-01 に変換
           categoryId: formData.categoryId,
           amount,
           memo: formData.memo,
@@ -62,7 +62,7 @@ export const ExpenseInput = () => {
       }
 
       setFormData({
-        date: format(new Date(), 'yyyy-MM-dd'),
+        date: format(new Date(), 'yyyy-MM'),
         categoryId: '',
         amount: '',
         memo: '',
@@ -79,7 +79,7 @@ export const ExpenseInput = () => {
   const handleEdit = (expense: Expense) => {
     setEditingExpense(expense);
     setFormData({
-      date: expense.date,
+      date: expense.date.substring(0, 7), // YYYY-MM-DD から YYYY-MM に変換
       categoryId: expense.categoryId,
       amount: String(expense.amount),
       memo: expense.memo || '',
@@ -91,7 +91,7 @@ export const ExpenseInput = () => {
   const handleCancelEdit = () => {
     setEditingExpense(null);
     setFormData({
-      date: format(new Date(), 'yyyy-MM-dd'),
+      date: format(new Date(), 'yyyy-MM'),
       categoryId: '',
       amount: '',
       memo: '',
@@ -133,7 +133,7 @@ export const ExpenseInput = () => {
         {editingExpense && (
           <Box sx={{ mb: 2, p: 2, bgcolor: 'primary.50', borderRadius: 1 }}>
             <Typography variant="body2" color="primary.main">
-              編集中: {editingExpense.date} - {categories.find(c => c.id === editingExpense.categoryId)?.name} - ¥{editingExpense.amount.toLocaleString()}
+              編集中: {editingExpense.date.substring(0, 7)} - {categories.find(c => c.id === editingExpense.categoryId)?.name} - ¥{editingExpense.amount.toLocaleString()}
             </Typography>
           </Box>
         )}
@@ -141,11 +141,11 @@ export const ExpenseInput = () => {
         <form onSubmit={handleSubmit}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
-              label="日付"
-              type="date"
+              label="支払い年月"
+              type="month"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              InputLabelProps={{ shrink: true }}
+              slotProps={{ inputLabel: { shrink: true } }}
               required
             />
 
@@ -209,7 +209,7 @@ export const ExpenseInput = () => {
             <Table size="small" sx={{ minWidth: { xs: 600, sm: 650 } }}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>日付</TableCell>
+                  <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>支払い年月</TableCell>
                   <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ</TableCell>
                   <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>金額</TableCell>
                   <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>たかし負担</TableCell>
@@ -223,7 +223,7 @@ export const ExpenseInput = () => {
                   const category = categories.find(c => c.id === expense.categoryId);
                   return (
                     <TableRow key={expense.id}>
-                      <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{expense.date}</TableCell>
+                      <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{expense.date.substring(0, 7)}</TableCell>
                       <TableCell sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>{category?.name}</TableCell>
                       <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{expense.amount.toLocaleString()}</TableCell>
                       <TableCell align="right" sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>¥{expense.husbandAmount.toLocaleString()}</TableCell>
