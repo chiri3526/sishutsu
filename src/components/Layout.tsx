@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton, useMediaQuery, useTheme } from '@mui/material';
-import { Dashboard, Receipt, Category, Upload, Settings, Logout, Menu as MenuIcon } from '@mui/icons-material';
+import { Dashboard, Receipt, Category, Upload, Settings, Logout, Menu as MenuIcon, TrendingUp } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
@@ -15,6 +15,7 @@ const menuItems = [
   { text: 'ダッシュボード', icon: <Dashboard />, path: '/' },
   { text: '支出入力', icon: <Receipt />, path: '/expenses' },
   { text: 'カテゴリ管理', icon: <Category />, path: '/categories' },
+  { text: 'つみたて', icon: <TrendingUp />, path: '/investments' },
   { text: 'Excel取り込み', icon: <Upload />, path: '/import' },
   { text: '設定', icon: <Settings />, path: '/settings' },
 ];

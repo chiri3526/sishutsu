@@ -7,6 +7,7 @@ import { Categories } from './pages/Categories';
 import { ExcelImport } from './pages/ExcelImport';
 import { Settings } from './pages/Settings';
 import { Login } from './pages/Login';
+import { Investments } from './pages/Investments';
 import { useAuth } from './hooks/useAuth';
 
 const theme = createTheme({
@@ -83,6 +84,16 @@ function App() {
               <PrivateRoute>
                 <Layout>
                   <Settings />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/investments"
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <Investments />
                 </Layout>
               </PrivateRoute>
             }

@@ -21,3 +21,24 @@ export const seedCategories = async () => {
 
   console.log('カテゴリの初期データを作成しました');
 };
+
+export const seedInvestments = async (userId: string) => {
+  const investments = [
+    { userId, type: 'stock' as const, amount: 50000, date: '2024-01-15', memo: '1月の株つみたて' },
+    { userId, type: 'stock' as const, amount: 50000, date: '2024-02-15', memo: '2月の株つみたて' },
+    { userId, type: 'stock' as const, amount: 50000, date: '2024-03-15', memo: '3月の株つみたて' },
+    { userId, type: 'sui' as const, amount: 30000, date: '2024-01-20', memo: '1月のすい積立' },
+    { userId, type: 'sui' as const, amount: 30000, date: '2024-02-20', memo: '2月のすい積立' },
+    { userId, type: 'sui' as const, amount: 30000, date: '2024-03-20', memo: '3月のすい積立' },
+  ];
+
+  for (const investment of investments) {
+    await addDoc(collection(db, 'investments'), {
+      ...investment,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  console.log('つみたての初期データを作成しました');
+};
