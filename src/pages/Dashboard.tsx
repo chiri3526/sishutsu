@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
-import { Box, Paper, Typography, Card, CardContent, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { TrendingUp, TrendingDown } from '@mui/icons-material';
+import { Box, Paper, Typography, Card, CardContent, Select, MenuItem, FormControl, InputLabel, Dialog, DialogTitle, DialogContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@mui/material';
+import { TrendingUp, TrendingDown, Close } from '@mui/icons-material';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { useAuth } from '../hooks/useAuth';
 import { useExpenses } from '../hooks/useExpenses';
@@ -15,6 +15,8 @@ export const Dashboard = () => {
   const { expenses, loading: expensesLoading } = useExpenses(user?.uid || null);
   const { categories, loading: categoriesLoading } = useCategories();
   const [selectedMonth, setSelectedMonth] = useState(format(new Date(), 'yyyy-MM'));
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogType, setDialogType] = useState<'total' | 'husband' | 'wife'>('total');
 
   const monthlyTotals = useMemo(() => getMonthlyTotals(expenses), [expenses]);
   
@@ -33,6 +35,33 @@ export const Dashboard = () => {
 
   const currentMonthData = monthlyTotals.find(m => m.month === selectedMonth);
   const previousMonthDiff = currentMonthData?.previousMonthDiff;
+
+  const handleCardClick = (type: 'total' | 'husband' | 'wife') => {
+    setDialogType(type);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const getDialogTitle = () => {
+    switch (dialogType) {
+      case 'total': return '総支出の履歴';
+      case 'husband': return 'たかし負担額の履歴';
+      case 'wife': return 'まみ負担額の履歴';
+    }
+  };
+
+  const getDialogExpenses = () => {
+    return currentMonthExpenses.map(expense => {
+      const category = categories.find(c => c.id === expense.categoryId);
+      return {
+        ...expense,
+        categoryName: category?.name || '不明'
+      };
+    }).sort((a, b) => b.date.localeCompare(a.date));
+  };
 
   if (expensesLoading || categoriesLoading) {
     return <Typography>読み込み中...</Typography>;
@@ -54,7 +83,7 @@ export const Dashboard = () => {
       </FormControl>
 
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: { xs: 2, sm: 3 }, mb: 3 }}>
-        <Card>
+        <Card sx={{ cursor: 'pointer', '&:hover': { boxShadow: 6 } }} onClick={() => handleCardClick('total')}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
               総支出
@@ -73,7 +102,7 @@ export const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card sx={{ cursor: 'pointer', '&:hover': { boxShadow: 6 } }} onClick={() => handleCardClick('husband')}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
               たかし負担額
@@ -87,7 +116,7 @@ export const Dashboard = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card sx={{ cursor: 'pointer', '&:hover': { boxShadow: 6 } }} onClick={() => handleCardClick('wife')}>
           <CardContent>
             <Typography color="textSecondary" gutterBottom sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>
               まみ負担額
@@ -167,6 +196,49 @@ export const Dashboard = () => {
         </ResponsiveContainer>
         </Box>
       </Paper>
+
+      <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+        <DialogTitle>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h6">{getDialogTitle()}</Typography>
+            <IconButton onClick={handleCloseDialog} size="small">
+              <Close />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+        <DialogContent>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>日付</TableCell>
+                  <TableCell>カテゴリ</TableCell>
+                  <TableCell align="right">金額</TableCell>
+                  {dialogType === 'husband' && <TableCell align="right">たかし負担</TableCell>}
+                  {dialogType === 'wife' && <TableCell align="right">まみ負担</TableCell>}
+                  <TableCell>メモ</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {getDialogExpenses().map((expense) => (
+                  <TableRow key={expense.id}>
+                    <TableCell>{expense.date}</TableCell>
+                    <TableCell>{expense.categoryName}</TableCell>
+                    <TableCell align="right">¥{expense.amount.toLocaleString()}</TableCell>
+                    {dialogType === 'husband' && (
+                      <TableCell align="right">¥{expense.husbandAmount.toLocaleString()}</TableCell>
+                    )}
+                    {dialogType === 'wife' && (
+                      <TableCell align="right">¥{expense.wifeAmount.toLocaleString()}</TableCell>
+                    )}
+                    <TableCell>{expense.memo || '-'}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };
