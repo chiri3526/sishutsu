@@ -207,31 +207,31 @@ export const Dashboard = () => {
           </Box>
         </DialogTitle>
         <DialogContent>
-          <TableContainer>
-            <Table>
+          <TableContainer sx={{ maxHeight: { xs: '60vh', sm: '70vh' }, overflowX: 'auto' }}>
+            <Table size="small" stickyHeader>
               <TableHead>
                 <TableRow>
-                  <TableCell>日付</TableCell>
-                  <TableCell>カテゴリ</TableCell>
-                  <TableCell align="right">金額</TableCell>
-                  {dialogType === 'husband' && <TableCell align="right">たかし負担</TableCell>}
-                  {dialogType === 'wife' && <TableCell align="right">まみ負担</TableCell>}
-                  <TableCell>メモ</TableCell>
+                  <TableCell sx={{ py: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>日付</TableCell>
+                  <TableCell sx={{ py: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>カテゴリ</TableCell>
+                  <TableCell align="right" sx={{ py: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>金額</TableCell>
+                  {dialogType === 'husband' && <TableCell align="right" sx={{ py: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>たかし負担</TableCell>}
+                  {dialogType === 'wife' && <TableCell align="right" sx={{ py: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>まみ負担</TableCell>}
+                  <TableCell sx={{ py: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>メモ</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {getDialogExpenses().map((expense) => (
                   <TableRow key={expense.id}>
-                    <TableCell>{expense.date}</TableCell>
-                    <TableCell>{expense.categoryName}</TableCell>
-                    <TableCell align="right">¥{expense.amount.toLocaleString()}</TableCell>
+                    <TableCell sx={{ py: 0.5, fontSize: { xs: '0.75rem', sm: '0.875rem' }, whiteSpace: 'nowrap' }}>{expense.date}</TableCell>
+                    <TableCell sx={{ py: 0.5, fontSize: { xs: '0.75rem', sm: '0.875rem' }, whiteSpace: 'nowrap' }}>{expense.categoryName}</TableCell>
+                    <TableCell align="right" sx={{ py: 0.5, fontSize: { xs: '0.75rem', sm: '0.875rem' }, whiteSpace: 'nowrap' }}>¥{expense.amount.toLocaleString()}</TableCell>
                     {dialogType === 'husband' && (
-                      <TableCell align="right">¥{expense.husbandAmount.toLocaleString()}</TableCell>
+                      <TableCell align="right" sx={{ py: 0.5, fontSize: { xs: '0.75rem', sm: '0.875rem' }, whiteSpace: 'nowrap' }}>¥{expense.husbandAmount.toLocaleString()}</TableCell>
                     )}
                     {dialogType === 'wife' && (
-                      <TableCell align="right">¥{expense.wifeAmount.toLocaleString()}</TableCell>
+                      <TableCell align="right" sx={{ py: 0.5, fontSize: { xs: '0.75rem', sm: '0.875rem' }, whiteSpace: 'nowrap' }}>¥{expense.wifeAmount.toLocaleString()}</TableCell>
                     )}
-                    <TableCell>{expense.memo || '-'}</TableCell>
+                    <TableCell sx={{ py: 0.5, fontSize: { xs: '0.75rem', sm: '0.875rem' }, whiteSpace: 'nowrap', maxWidth: { xs: '150px', sm: '200px' }, overflow: 'hidden', textOverflow: 'ellipsis' }}>{expense.memo || '-'}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
